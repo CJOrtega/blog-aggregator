@@ -14,3 +14,10 @@ export async function getUserByName(name: string) {
                     .where(eq(users.name, name));
     return user;
 }
+
+export async function getAllUsersName() {
+    const result = await db.select({
+        name: users.name
+    }).from(users);
+    return result;
+}
