@@ -1,10 +1,12 @@
-import { handlerLogin } from "./command_login";
+import { handlerLogin } from "./handler_login";
 import { CommandsRegistry, registerCommand, runCommand } from "./command_registry";
 import { readConfig, setUser } from "./config";
+import { handlerRegister } from "./handler_register";
 
-function main() {
+async function main() {
     const commands: CommandsRegistry = {};
     registerCommand(commands, "login", handlerLogin);
+    registerCommand(commands, "register", handlerRegister);
     const cliArguments = process.argv.slice(2);
     if (cliArguments.length === 0) {
         console.error("Not enough arguments were provided.");
@@ -12,7 +14,8 @@ function main() {
     }
     const command = cliArguments[0];
     const cmdArgs = cliArguments.slice(1);
-    runCommand(commands, command , ...cmdArgs);
+    await runCommand(commands, command , ...cmdArgs);
+    process.exit(0);
 }
 
 main();

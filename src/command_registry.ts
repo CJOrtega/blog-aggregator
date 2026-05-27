@@ -6,10 +6,10 @@ export function registerCommand(registry: CommandsRegistry, cmdName: string, han
     registry[cmdName] = handler;
 }
 
-export function runCommand(registry: CommandsRegistry, cmdName: string, ...args: string[]): void {
+export async function runCommand(registry: CommandsRegistry, cmdName: string, ...args: string[]): Promise<void> {
     if (cmdName in registry) {
         const callbackFunction = registry[cmdName];
-        callbackFunction(cmdName, ...args);
+        await callbackFunction(cmdName, ...args);
     }
     return
 }
