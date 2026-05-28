@@ -5,6 +5,7 @@ import { handlerRegister } from "./handler_register";
 import { handlerReset } from "./handler_reset";
 import { handlerUsers } from "./handler_users";
 import { handlerAgg } from "./handler_agg";
+import { handlerAddFeed } from "./handler_addfeed";
 
 async function main() {
     const commands: CommandsRegistry = {};
@@ -13,6 +14,7 @@ async function main() {
     registerCommand(commands, "reset", handlerReset);
     registerCommand(commands, "users", handlerUsers);
     registerCommand(commands, "agg", handlerAgg);
+    registerCommand(commands, "addfeed", handlerAddFeed);
     const cliArguments = process.argv.slice(2);
     if (cliArguments.length === 0) {
         console.error("Not enough arguments were provided.");
