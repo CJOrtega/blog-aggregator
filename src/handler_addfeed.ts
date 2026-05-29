@@ -3,6 +3,7 @@ import { createFeed } from "./lib/db/queries/feeds";
 import { getUserByName } from "./lib/db/queries/users";
 import { type InferSelectModel } from 'drizzle-orm';
 import { feeds, users } from "./lib/db/schema";
+import { createFeedFollow } from "./lib/db/queries/feedFollows";
 
 export type Feed = typeof feeds.$inferSelect;
 export type User = typeof users.$inferSelect;
@@ -19,10 +20,11 @@ export async function handlerAddFeed(cmdName: string, ...args: string[]): Promis
 
     const userFromDB: User = await getUserByName(currentUserOnFile);
     const newFeed: Feed = await createFeed(name, url, userFromDB.id);
-    printFeed(newFeed, userFromDB);
+    const newFeedFollow = await createFeedFollow(userFromDB, newFeed);
+    printFeed(newFeedFollow.feedName, newFeedFollow.userName);
 }
 
-function printFeed(feed: Feed, user: User): void {
+function printFeed(feed: string, user: string): void {
     console.log(feed);
     console.log(user);
 }

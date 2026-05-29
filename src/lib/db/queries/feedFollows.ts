@@ -25,3 +25,22 @@ export async function createFeedFollow(user: User, feed: Feed) {
     return feedFollowData;
 }
 
+export async function getFeedFromURL(url: string) {
+    const [feed] = await db.select().
+        from(feeds).where(eq(feeds.url, url));
+    return feed;
+}
+
+export async function getFeedFollowsForUser(user: User) {
+    const feedsFollowData = await db.select({
+        feedFollows: feedFollows,
+        userName: users.name,
+        feedName: feeds.name
+    }).from(feedFollows)
+    .innerJoin(users, eq(users.id, feedFollows.userId))
+    .innerJoin(feeds, eq(feeds.id, feedFollows.feedId))
+    .where(eq(feedFollows.userId, user.id));
+
+    return feedsFollowData;
+}
+
