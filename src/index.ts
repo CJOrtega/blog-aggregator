@@ -10,6 +10,7 @@ import { handlerFeeds } from "./handler_feeds";
 import { handlerFollow } from "./handler_follow";
 import { handlerFollowing } from "./handler_following";
 import { loginMiddleware } from "./middleware";
+import { handlerUnfollow } from "./handler_unfollow";
 
 async function main() {
     const commands: CommandsRegistry = {};
@@ -22,6 +23,7 @@ async function main() {
     registerCommand(commands, "feeds", handlerFeeds);
     registerCommand(commands, "follow", loginMiddleware(handlerFollow));
     registerCommand(commands, "following", loginMiddleware(handlerFollowing));
+    registerCommand(commands, "unfollow", loginMiddleware(handlerUnfollow));
     const cliArguments = process.argv.slice(2);
     if (cliArguments.length === 0) {
         console.error("Not enough arguments were provided.");
