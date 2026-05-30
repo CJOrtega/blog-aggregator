@@ -8,7 +8,7 @@ import { createFeedFollow } from "./lib/db/queries/feedFollows";
 export type Feed = typeof feeds.$inferSelect;
 export type User = typeof users.$inferSelect;
 
-export async function handlerAddFeed(cmdName: string, ...args: string[]): Promise<void> {
+export async function handlerAddFeed(cmdName: string, user: User, ...args: string[]): Promise<void> {
     const currentUserOnFile = readConfig().currentUserName;
 
     if (args.length < 2) {
@@ -18,9 +18,8 @@ export async function handlerAddFeed(cmdName: string, ...args: string[]): Promis
     const name = args[0];
     const url = args[1];
 
-    const userFromDB: User = await getUserByName(currentUserOnFile);
-    const newFeed: Feed = await createFeed(name, url, userFromDB.id);
-    const newFeedFollow = await createFeedFollow(userFromDB, newFeed);
+    const newFeed: Feed = await createFeed(name, url, user.id);
+    const newFeedFollow = await createFeedFollow(user, newFeed);
     printFeed(newFeedFollow.feedName, newFeedFollow.userName);
 }
 
